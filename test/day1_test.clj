@@ -23,7 +23,7 @@
 (deftest example-2
   (is (= (->> example-data
               (seq-sums [])
-              ( inclist [] nil)
+              (inclist [] nil)
               (count)))
       5))
 

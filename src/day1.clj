@@ -4,21 +4,30 @@
                (clojure.string/split-lines)
                (map  #(Integer/parseInt %))))
 
+(defn accending
+  "returns a new measure mark and an accending number if there is one"
+  [old-measure new-measure]
+  (if (or ( nil? old-measure)
+          (< new-measure old-measure))
+    [new-measure nil]
+    [new-measure new-measure]))
+
 (defn inclist
-  ([acc m seq]
-   (if ( empty? seq)
-     acc
-     (let [newm (first seq)
-           newseq (rest seq)
-           new-acc (when m
-                     (if (< m newm)
-                       (conj acc newm)
-                       acc))]
-       (recur new-acc newm newseq)))))
+  "Returns a list of numbers that are accending from a seq"
+  [acc m seq]
+  (if ( empty? seq)
+    acc
+    (let [[newm new-accender ] (accending m (first seq))
+          newseq (rest seq)
+          new-acc (if new-accender
+                    (conj acc new-accender)
+                    acc)]
+      (recur new-acc newm newseq))))
 
 (def answer-1 (->> data
                    (inclist [] nil)
                    (count)))
+;; 1448
 
 (defn seq-sums [acc seq]
   (if (= 2  (count seq))
@@ -30,5 +39,30 @@
        (seq-sums [])
        ( inclist [] nil)
        (count)))
+; 1471
 
+
+;; Better solution:
+(defn count-accentions [input]
+  (->> input
+       (partition 2 1)
+       (filter #( < (first %) (last %)))
+       (count)))
+
+(defn triple-sums [seq]
+  (->> seq
+       (partition 3 1)))
+
+(defn count-triple-sums-accending [data]
+  (->> (triple-sums data)
+       (map #(apply + %))
+       (count-accentions)))
+
+(comment
+  "part 1" 1448
+  (count-accentions data))
+
+(comment
+  "part 2" 1471
+  (count-triple-sums-accending data))
 
