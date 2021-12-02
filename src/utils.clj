@@ -12,3 +12,4 @@
        (map #(Long/parseLong %))))
 
 (comment (read-number-file  "resources/day1"))
+(comment (read-file "resources/day2"))
