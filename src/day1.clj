@@ -1,8 +1,10 @@
-(ns day1)
+(ns day1
+  (:require [utils :refer :all]))
 
 (def data (->> (slurp "resources/day1")
                (clojure.string/split-lines)
                (map  #(Integer/parseInt %))))
+(def data1 (read-number-file "resources/day1"))
 
 (defn accending
   "returns a new measure mark and an accending number if there is one"
@@ -54,13 +56,13 @@
        (partition 3 1)))
 
 (defn count-triple-sums-accending [data]
-  (->> (triple-sums data)
+  (->> (triple-sums data1)
        (map #(apply + %))
        (count-accentions)))
 
 (comment
   "part 1" 1448
-  (count-accentions data))
+  (count-accentions data1))
 
 (comment
   "part 2" 1471
