@@ -55,16 +55,16 @@
   (->> seq
        (partition 3 1)))
 
-(defn count-triple-sums-accending [data]
+(defn count-triple-sums-accending []
   (->> (triple-sums data1)
        (map #(apply + %))
        (count-accentions)))
 
 (comment
-  "part 1" 1448
+  "part 1" ;;1448
   (count-accentions data1))
 
 (comment
-  "part 2" 1471
+  "part 2" ;;1471
   (count-triple-sums-accending data))
 
