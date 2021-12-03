@@ -23,35 +23,28 @@
 
 (defn filter-most-common-bit [idx ds]
   (let [digit-freqs (frequencies (map #(nth % idx) ds))
-        max-count (if (apply = (vals digit-freqs))
+        max-count (if (and (< 1 (count (vals digit-freqs)))
+                           (apply = (vals digit-freqs)))
                       \1
                       (key (apply max-key val digit-freqs)))
         filtered-ds (filter #(= max-count (nth % idx))ds)]
-    (println (str "maxount" max-count))
     filtered-ds))
 
 (defn filter-least-common-bit [idx ds]
   (let [digit-freqs (frequencies (map #(nth % idx) ds))
-        min-count (if (apply = (vals digit-freqs))
+        min-count (if (and (< 1 (count (vals digit-freqs)))
+                           (apply = (vals digit-freqs)))
                     \0
                     (key (apply min-key val digit-freqs)))
-        filtered-ds (filter #(= min-count (nth % idx)) ds)]
-    (println (str "minount" min-count))
-    (println filtered-ds)
+        filtered-ds  (filter #(= min-count (nth % idx)) ds)]
     filtered-ds))
 
 (defn reduce-ds [func idx ds]
-  (if (or (= 1 count ds)
-          (= idx 11))
+  (if  (= 1 (count ds))
     ds
-    (do (println ds)
-        (recur func (inc idx) (func idx ds)))))
+    (recur func (inc idx) (func idx ds))))
 
-(comment
-  (reduce-ds filter-most-common-bit 0 data))
 
-(comment
-  (bin->int (str 1 1 1 0 0 0 0 0 0 0 1 0)) ; 3586
-  (bin->int "001100010101"))  ;789 low
-
-; still messy Need to figutre out how to fix the end conditions.
+(comment "solution 2 2829354"
+         (* (bin->int (apply str (first (reduce-ds filter-least-common-bit 0 data))))
+            (bin->int (apply str (first (reduce-ds filter-most-common-bit 0 data))))))
