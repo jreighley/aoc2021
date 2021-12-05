@@ -44,7 +44,8 @@
     ds
     (recur func (inc idx) (func idx ds))))
 
+(def ogr (bin->int (apply str (first (reduce-ds filter-most-common-bit 0 data)))))
+(def co2sr (bin->int (apply str (first (reduce-ds filter-least-common-bit 0 data)))))
 
 (comment "solution 2 2829354"
-         (* (bin->int (apply str (first (reduce-ds filter-least-common-bit 0 data))))
-            (bin->int (apply str (first (reduce-ds filter-most-common-bit 0 data))))))
+       (* ogr co2sr))
