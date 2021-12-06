@@ -5,6 +5,8 @@
 (defn read-file [f]
     (->> (slurp f)
          (s/split-lines)))
+(defn parseLong [numeric-string]
+  (Long/parseLong numeric-string))
 
 (defn read-number-file [f]
   (->> f

@@ -1,5 +1,3 @@
-
-
 (ns day4)
 
 (def data-lines (->> (slurp "resources/day4")
@@ -48,28 +46,66 @@
 
 (def winning-card (->> (take 22 numbers-call-list)
                        (anywinner?)))
-(def call-sets (for [n (range 5 (count  numbers-call-list))]
+
+(def call-sets (for [n (range 1 (count  numbers-call-list))]
                  (set  (take n numbers-call-list))))
 
 (defn card-info [card]
   (let [card-win-cond (win-sets card)]
-
       card-win-cond))
+
+(defn shortest-superset [set]
+  (let [called-digits (->> call-sets
+                           (filter #(clojure.set/superset? % set))
+                           (sort-by #(count %))
+                           (first))
+        n-digits (count called-digits)]
+    {:called called-digits :number  n-digits}))
+
+(defn find-winnning-call [card]
+  (let [winning-sets (->> card
+                          (win-sets)
+                          (map shortest-superset)
+                          (sort-by :number)
+                          (first))]
+    (assoc winning-sets
+      :card card)))
+
+(def losing-card (->> (map find-winnning-call bingo-cards)
+                      (filter #(pos? (:number %)))
+                      (sort-by :number)
+                      (last)))
+
+(def winning-card (->> (map find-winnning-call bingo-cards)
+                       (filter #(pos? (:number %)))
+                       (sort-by :number)
+                       (first)))
+
+(* (->> winning-card
+        (:card)
+        (reduce into)
+        (set)
+        (remove :called)
+        (reduce +))
+
+  (->> winning-card
+       :number
+       dec
+       (nth numbers-call-list)))  ;should be 67716
+
+;65 wrong -- probalby off by one?
+;89895 too high  12447 also too high..
+
+(keep (set (->> losing-card
+                :called)) numbers-call-list) ;9
+
+
+
 
 (defn checkwin? [win-conds called-list]
    (filter #(clojure.set/superset? called-list %) win-conds))
-
-(comment
-     (for [call call-sets]
-          (let [wins (seq (checkwin? (card-info (first bingo-cards)) call))]
-
-            ( wins))))
+(def bingo? #((complement empty?) %))
 
 
-(comment (calc-sum-unmaprked winning-card)) ;; 1026
-;; )
-
-
-n
 (comment "66 is the number"
   win-sets)
