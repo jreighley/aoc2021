@@ -6,28 +6,6 @@
                          (-> (slurp "resources/day6")
                              (clojure.string/split  #","))))
 
-
-(defn reset-timer [n]
-  (if (= n -1)
-    6
-    n))
-
-
-(defn process-day [fish-list]
-  (let [new-days-to-spawn (map dec fish-list)
-        spawned-fish (take (count (filter #(= -1 % ) new-days-to-spawn))
-                           (repeat  8))
-        new-fish-list  (map reset-timer new-days-to-spawn)]
-    (into new-fish-list spawned-fish)))
-
-(def answer-1 (count (nth  (iterate process-day init-fish-list) 80)))
-; 362346 Correct
-
-(def brute-force-answer-2 (delay (count (nth  (iterate process-day init-fish-list) 256))))
-;; heap space error
-
-(def days (take 21 (cycle (range 7))))
-
 (def fish-pop-by-cycle-time (frequencies init-fish-list))
 
 (defn schedule-spawn [generation poplist poplimit]
