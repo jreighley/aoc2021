@@ -16,6 +16,7 @@
            (reduce +)))
 
 (def answer-1 (apply min (map fuel-needed2loc (range 1800)))) ;344297 correct
+
 (defn distance->fuel [d]
   (reduce + (map inc (range d))))
 
