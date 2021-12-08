@@ -17,28 +17,22 @@
 
 (calculate-answer-1 data)  ;521 is correct
 
-(->> data
-  (map #(clojure.string/split % #" "))
-  (map #(take-last 4 %)))
-
-(defn guess-digit [facts digit]
-  (cond (= 2 (.length digit)) {(set digit) 1}
-        (= 3 (.length digit)) {(set digit) 7}
-        (= 4 (.length digit)) {(set digit) 4}
-        (= 8 (.length digit)) {(set digit) 8}))
-
-(defn think [facts puzzles]
-  (if empty? puzzles
-    facts))
+(def datap2
+  (let [data (->> data
+               (map #(clojure.string/split % #" ")))]
+    (for [line data]
+      {:signal (group-by #(.length %) (take 10 line)) :output (take-last 4 line)})))
 
 
 
-(defn deduce-numbers [output-list]
-  (let [computables (count-segments output-list)
-        ones (-> (filter #(= 2 (.length %)) output-list))
-        fours (filter #(= 4 (.length %)) output-list)
-        sevens (filter #(= 3 (.length %)))
-        eights (filter #(= 8 (.length %)))]
-    computables))
+(defn compute-digit [facts digit]
+  (let [novel-fact (cond (= 2 (.length digit)) {(set digit) 1}
+                         (= 3 (.length digit)) {(set digit) 7}
+                         (= 4 (.length digit)) {(set digit) 4}
+                         (= 8 (.length digit)) {(set digit) 8})]
+       (conj facts novel-fact)))
 
-(deduce-numbers '("ab" "bdacfeg" "ab" "bga"))
+
+
+(comment (think {} '("af" "bafc" "fea" "af")))
+
