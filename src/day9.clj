@@ -58,10 +58,6 @@
                            (remove explored-points))
             new-frontier  (into remaining-frontier novel-uphill)
             new-explored (conj explored-points exploring)]
-        { :exploring exploring
-         :novel novel-uphill
-         :next-front new-frontier
-         :new-explored new-explored}
         (recur topo new-explored new-frontier))))
 
 (def basin-bottoms (keep identity (map #( low-points data %)  (range 10000))))
