@@ -1,4 +1,20 @@
 (ns day9)
+
+(defn process-line [line]
+  (->> line
+       (partition 1)
+       (map #(apply str %))
+       (mapv #(Long/parseLong %))))
+
+(def data (->>(slurp "resources/day9")
+              (clojure.string/split-lines)
+              (mapv process-line)))
+
+(apply min (first (take 2 data)))
+
+
+
+
 (defn get-digits [sn]
  (->> sn
       (partition 1)
